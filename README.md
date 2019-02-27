@@ -9,7 +9,13 @@ The jjrom/doctools docker image gives access to the following command line appli
 * [pandoc](http://pandoc.org)
 * [asciidoctor-pdf](https://asciidoctor.org)
 
-## Installation
+## Installation 
+
+### From dockerhub
+
+    docker pull jjrom/doctools
+
+### Build from source
 Launch the following command and go for a (long) coffee break
 
     docker build -t jjrom/doctools .
@@ -20,3 +26,9 @@ Replace ${COMMAND} with one of {openapi|api2html|widdershins|pandoc|asciidoctor-
     docker run --rm -ti jjrom/doctools 
 
 *Note: input files must be mounted with docker -v option to be accessed by the tools*
+
+## FAQ
+
+### pandoc build error returned a non-zero code: 137
+
+In Mac, to tackle with it, you might want to try changing memory allocation in Docker > Preference > Memory. Mostly increase will work.
