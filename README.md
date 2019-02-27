@@ -13,17 +13,17 @@ The jjrom/doctools docker image gives access to the following command line appli
 
 ### From dockerhub
 
-    docker pull jjrom/doctools
+    docker pull jjrom/doctools:1.0
 
 ### Build from source
 Launch the following command and go for a (long) coffee break
 
-    docker build -t jjrom/doctools .
+    docker build -t jjrom/doctools:1.0 .
 
 ## Usage
 Replace ${COMMAND} with one of {openapi|api2html|widdershins|pandoc|asciidoctor-pdf}
 
-    docker run --rm -ti jjrom/doctools 
+    docker run --rm -ti jjrom/doctools:1.0
 
 *Note: input files must be mounted with docker -v option to be accessed by the tools*
 
