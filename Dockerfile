@@ -5,23 +5,25 @@ ENV API2HTML_VERSION 0.3.0
 ENV WIDDERSHINS_VERSION 3.6.7
 ENV ASCIIDOCTORPDF_VERSION 1.5.0.alpha.16
 ENV ROUGE_VERSION 3.3.0
+ENV CONCURRENTRUBY_VERSION 1.1.4
 
 ENV PANDOC_VERSION 2.6
-ENV PANDOC_DOWNLOAD_URL https://github.com/jgm/pandoc/archive/$PANDOC_VERSION.tar.gz
+ENV PANDOC_DOWNLOAD_URL https://github.com/jgm/pandoc/archive/${PANDOC_VERSION}.tar.gz
 ENV PANDOC_ROOT /usr/local/pandoc
 
 RUN apk update \
- && apk add --no-cache bash gmp libffi ruby ruby-rdoc python2 php7 composer npm
+ && apk add --no-cache bash gmp libffi ruby ruby-rdoc python2 php7 php7-tokenizer composer npm
 
 # openapi
-RUN composer global require zircote/swagger-php:$SWAGGER_PHP_VERSION
+RUN composer global require zircote/swagger-php:${SWAGGER_PHP_VERSION}
 
 # api2html, widdershins
-RUN npm i api2html@$API2HTML_VERSION widdershins@$WIDDERSHINS_VERSION -g
+RUN npm i api2html@$API2HTML_VERSION widdershins@${WIDDERSHINS_VERSION} -g
 
 # asciidoctor-pdf
-RUN gem install asciidoctor-pdf -v $ASCIIDOCTORPDF_VERSION  --pre
-RUN gem install rouge -v $ROUGE_VERSION
+RUN gem install asciidoctor-pdf -v ${ASCIIDOCTORPDF_VERSION}  --pre
+RUN gem install rouge -v ${ROUGE_VERSION}
+RUN gem install concurrent-ruby -v ${CONCURRENTRUBY_VERSION}
 
 # pandoc (note || true after cabal install to avoid non zero code exit due to warning on existing symlink creation)
 RUN apk add --no-cache --virtual build-dependencies \
@@ -32,19 +34,19 @@ RUN apk add --no-cache --virtual build-dependencies \
     zlib-dev \
     curl \
  && mkdir -p /pandoc-build && cd /pandoc-build \
- && curl -fsSL "$PANDOC_DOWNLOAD_URL" -o pandoc.tar.gz \
+ && curl -fsSL "${PANDOC_DOWNLOAD_URL}" -o pandoc.tar.gz \
  && tar -xzf pandoc.tar.gz && rm -f pandoc.tar.gz \
- && ( cd pandoc-$PANDOC_VERSION && cabal update && cabal install --only-dependencies || true \
-    && cabal configure --prefix=$PANDOC_ROOT \
+ && ( cd pandoc-${PANDOC_VERSION} && cabal update && cabal install --only-dependencies || true \
+    && cabal configure --prefix=${PANDOC_ROOT} \
     && cabal build \
     && cabal copy || true \
     && cd .. ) \
- && rm -Rf pandoc-$PANDOC_VERSION/ \
+ && rm -Rf pandoc-${PANDOC_VERSION}/ \
  && apk del --purge build-dependencies \
  && rm -Rf /root/.cabal/ /root/.ghc/ \
  && cd / && rm -Rf /pandoc-build
 
-ENV PATH "$PATH:/root/.composer/vendor/bin:$PANDOC_ROOT/bin"
+ENV PATH "$PATH:/root/.composer/vendor/bin:${PANDOC_ROOT}/bin"
 
 RUN mkdir /workdir
 ADD entrypoint.sh /usr/local/bin

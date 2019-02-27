@@ -22,6 +22,10 @@ case "$command" in
         exec asciidoctor-pdf "$@"
         ;;
 
+    debug)
+        exec /bin/bash
+        ;;
+
     *)
         echo $"[ERROR] Choose one command between {openapi|api2html|widdershins|pandoc|asciidoctor-pdf}"
         exit 1
