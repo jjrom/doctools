@@ -22,12 +22,16 @@ case "$command" in
         exec asciidoctor-pdf "$@"
         ;;
 
+    openapi2postmanv2)
+        exec openapi2postmanv2 "$@"
+        ;;
+
     debug)
         exec /bin/bash
         ;;
 
     *)
-        echo $"[ERROR] Choose one command between {openapi|api2html|widdershins|pandoc|asciidoctor-pdf}"
+        echo $"[ERROR] Choose one command between {openapi|api2html|widdershins|pandoc|asciidoctor-pdf|openapi2postmanv2}"
         exit 1
 
 esac

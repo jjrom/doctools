@@ -46,6 +46,9 @@ RUN apk add --no-cache --virtual build-dependencies \
  && rm -Rf /root/.cabal/ /root/.ghc/ \
  && cd / && rm -Rf /pandoc-build
 
+# OpenAPI to Postman
+RUN npm install openapi-to-postmanv2 -g
+
 ENV PATH "$PATH:/root/.composer/vendor/bin:${PANDOC_ROOT}/bin"
 
 RUN mkdir /workdir
